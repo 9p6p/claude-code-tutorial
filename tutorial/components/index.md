@@ -1,70 +1,121 @@
-# `components/` — UI 组件库
+# `components/` — UI 组件库（389 个文件）
 
 ## 模块概述
 
-`components/` 是 Claude Code 的**完整终端 UI 层**，共 439 个文件。基于 Ink（终端 React 渲染器）构建，包含消息渲染、输入处理、权限对话框、设计系统等。
+`components/` 构成了完整的终端 UI 应用层。所有组件都使用了 **React Compiler** 的输出格式（`_c()` memo cache），实现自动的渲染优化。
 
-## 目录结构
+## 组件分类索引
 
-| 子目录 | 文件数 | 说明 |
-|--------|--------|------|
-| `messages/` | 42 | 消息渲染（助手/用户/系统/工具） |
-| `PromptInput/` | 21 | 输入系统（346KB 主组件！） |
-| `permissions/` | 66 | 权限确认 UI |
-| `design-system/` | 16 | 基础组件库 |
-| `mcp/` | 14 | MCP 服务器管理 |
-| `Spinner/` | 12 | 加载动画 |
-| `LogoV2/` | 15 | Logo 和欢迎页 |
-| `Settings/` | 4 | 设置面板（Config.tsx 265KB!） |
-| `CustomSelect/` | 10 | 自定义选择控件 |
-| `FeedbackSurvey/` | 9 | 反馈调查 |
-| `agents/` | 14 | Agent 管理 |
-| `tasks/` | 12 | 后台任务 UI |
-| 顶层文件 | ~113 | 各种独立组件 |
+| 类别 | 文件数 | 说明 |
+|------|--------|------|
+| App 层 | 2 | 顶层容器和全屏布局 |
+| 消息系统 | 34 | 34 种消息类型组件 |
+| 输入系统 | 20+ | PromptInput 及其子组件 |
+| 权限系统 | 47 | 权限请求 UI |
+| 设计系统 | 16 | 原语组件 |
+| MCP | 14 | MCP 服务器管理 |
+| Spinner | 12 | 加载动画系统 |
+| 任务/团队 | 12 | 后台任务管理 |
+| 设置 | 4 | 配置/状态/用量 |
+| Agent | 12 | Agent 管理 UI |
 
 ## 超级组件 Top 5
 
 | 组件 | 大小 | 说明 |
 |------|------|------|
-| `PromptInput/PromptInput.tsx` | **347KB** | 输入区（项目最大单文件！） |
-| `Settings/Config.tsx` | **265KB** | 配置面板 |
-| `LogSelector.tsx` | **196KB** | 日志选择器 |
-| `mcp/ElicitationDialog.tsx` | **175KB** | MCP 信息采集 |
-| `Stats.tsx` | **149KB** | 统计面板 |
+| `PromptInput.tsx` | **347KB** | 智能输入框（集成历史、补全、粘贴、Vim、语音等） |
+| `ink/ink.tsx` | 246KB | Ink 主引擎 |
+| `Messages.tsx` | 144KB | 消息列表管理器 |
+| `ScrollKeybindingHandler.tsx` | 146KB | 滚动快捷键处理 |
+| `MessageSelector.tsx` | 113KB | 消息选择器 |
 
-## 核心组件链
+## 核心组件分析
 
+### `App.tsx` — 应用入口
+
+纯包装器，三层 Provider 嵌套：`FpsMetricsProvider` → `StatsProvider` → `AppStateProvider`
+
+### `PromptInput/` — 智能输入系统（347KB + 10 个子文件）
+
+集成了几乎所有输入相关功能：
+- 箭头键历史（`useArrowKeyHistory`）
+- Typeahead 自动补全（`useTypeahead`）
+- IDE @ 引用（`useIdeAtMentioned`）
+- 输入缓冲区/撤销（`useInputBuffer`）
+- Prompt 建议（`usePromptSuggestion`）
+- 权限模式切换、图片粘贴、Vim 模式、Slack 频道建议等
+
+### `Messages.tsx` — 消息列表（144KB）
+
+**消息预处理管道**：
 ```
-App.tsx (根容器)
-  └── FpsMetricsProvider → StatsProvider → AppStateProvider
-        └── REPL.tsx (主屏幕)
-              ├── Messages.tsx (144KB, 消息列表)
-              │     └── MessageRow → Message → messages/*.tsx
-              ├── Spinner.tsx (86KB, 加载状态)
-              ├── PromptInput.tsx (347KB, 输入区)
-              └── PermissionRequest.tsx (权限对话框)
+normalizeMessages → reorderMessagesInUI → applyGrouping 
+→ collapseReadSearchGroups → collapseHookSummaries 
+→ collapseTeammateShutdowns → collapseBackgroundBashNotifications
 ```
 
-## 设计系统组件
+使用 `VirtualMessageList` 实现虚拟化滚动，支持 Brief mode 过滤。
+
+### `messages/` — 34 种消息组件
+
+| 类别 | 组件 |
+|------|------|
+| **Assistant** | TextMessage, ThinkingMessage, RedactedThinkingMessage, ToolUseMessage |
+| **User** | TextMessage, ImageMessage, BashInputMessage, BashOutputMessage, CommandMessage, PlanMessage, TeammateMessage, ChannelMessage 等 |
+| **System** | TextMessage, APIErrorMessage, RateLimitMessage, ShutdownMessage |
+| **Tool** | GroupedToolUseContent, CollapsedReadSearchContent, HookProgressMessage |
+| **附件** | AttachmentMessage (70KB，最大的消息组件) |
+
+### `permissions/` — 权限系统（47 个文件）
+
+通过工具类型分发到对应权限请求 UI：
+
+```typescript
+switch (tool) {
+  case FileEditTool:  → FileEditPermissionRequest
+  case BashTool:      → BashPermissionRequest
+  case PowerShellTool → PowerShellPermissionRequest
+  case WebFetchTool:  → WebFetchPermissionRequest
+  case SkillTool:     → SkillPermissionRequest
+  // ... 共 13 种
+  default:            → FallbackPermissionRequest
+}
+```
+
+### `design-system/` — 设计系统原语（16 个文件）
 
 | 组件 | 说明 |
 |------|------|
-| `ThemeProvider` | 主题管理（dark/light/auto） |
-| `ThemedBox/ThemedText` | 主题感知的基础组件 |
-| `Dialog` | 确认/取消对话框 |
-| `Tabs` | 标签页 |
+| `ThemedBox` | 主题感知 Box（`borderColor` 接受 Theme key 或原始颜色） |
+| `ThemedText` | 主题感知 Text |
+| `ThemeProvider` | 主题管理（'light'/'dark'/'auto'，OSC 11 探测） |
+| `Dialog` | 确认/取消对话框（内置快捷键） |
+| `Pane` | 终端区域面板 |
 | `FuzzyPicker` | 模糊搜索选择器 |
-| `Pane` | 命令屏幕容器 |
-| `Divider` | 分隔线 |
+| `Tabs` | 标签页组件（40KB） |
+| `Divider` | 分割线 |
 | `ProgressBar` | 进度条 |
 
-## 全局性设计模式
+### `mcp/` — MCP 服务器管理（14 个文件）
 
-1. **React Compiler**：几乎所有组件都经 React Compiler 编译（`_c()` 缓存）
-2. **编译时 DCE**：`feature()` 实现死代码消除
-3. **极致性能**：模块级缓存、WeakMap diff 缓存、OffscreenFreeze、虚拟滚动
-4. **Ink 终端 UI**：基于 Box/Text 而非 DOM
+`MCPSettings` 使用状态机驱动：`list → server-menu → tool-list → tool-detail`
+
+### `Spinner.tsx` — 加载动画（86KB）
+
+支持 `TeammateSpinnerTree`（多 agent 状态树）、shimmer 动画、Brief mode 分支。
+
+### `FullscreenLayout.tsx` — 全屏布局（83KB）
+
+`ScrollChromeContext` + `useUnseenDivider` 实现 "N new messages" 气泡和 sticky header。
+
+## 通用代码模式
+
+1. **React Compiler**：`_c()` memo cache，自动跳过未变化的子树
+2. **Feature flags**：`feature('KAIROS')` 等编译时常量
+3. **条件 require**：`feature('X') ? require('...') : null`
+4. **useAppState selector**：选择性订阅全局状态
+5. **Theme 集成**：颜色值使用 `keyof Theme` 而非硬编码
 
 ## 总结
 
-`components/` 是 Claude Code 的"脸面"——439 个组件构成了完整的终端 UI 体验。从 347KB 的 PromptInput 到 16 个设计系统组件，展示了终端 UI 可以做到和 Web UI 一样丰富和精致。
+389 个组件构成了 Claude Code 完整的终端 UI——从 347KB 的智能输入框到 34 种消息类型、47 个权限组件、16 个设计系统原语，在终端中实现了接近 Web 应用级别的交互能力。
