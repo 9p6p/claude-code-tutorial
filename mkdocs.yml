@@ -1,0 +1,130 @@
+site_name: "Claude Code 源码教程"
+site_description: "Claude Code 项目的逐文件深度代码教程"
+site_url: ""
+docs_dir: tutorial
+site_dir: site
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式
+    - scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.tabs.link
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+  font:
+    text: Noto Sans SC
+    code: JetBrains Mono
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/anthropics/claude-code
+
+nav:
+  - "🏠 首页": index.md
+  - "📚 入门":
+    - "背景知识": 00_background_knowledge.md
+    - "阅读指南": 00_reading_guide.md
+  - "🔧 核心入口文件":
+    - "main.tsx — 主入口": main.md
+    - "commands.ts — 命令注册表": commands_registry.md
+    - "tools.ts — 工具注册表": tools_registry.md
+    - "Tool.ts — 工具类型系统": Tool.md
+    - "QueryEngine.ts — LLM查询引擎": QueryEngine.md
+    - "query.ts — API查询底层": query.md
+    - "context.ts — 上下文收集": context.md
+    - "setup.ts — 环境初始化": setup.md
+    - "ink.ts — TUI渲染引擎": ink_entry.md
+    - "Task.ts — 后台任务类型": Task.md
+    - "tasks.ts — 任务注册表": tasks_entry.md
+    - "history.ts — 命令历史": history.md
+    - "cost-tracker.ts — 成本追踪": cost-tracker.md
+    - "costHook.ts — 成本Hook": costHook.md
+    - "replLauncher.tsx — REPL启动器": replLauncher.md
+    - "dialogLaunchers.tsx — 对话框": dialogLaunchers.md
+    - "interactiveHelpers.tsx — 交互辅助": interactiveHelpers.md
+    - "projectOnboardingState.ts — 引导状态": projectOnboardingState.md
+  - "📦 模块文档":
+    - "🏗️ 基础设施":
+      - "bootstrap/ — 全局状态": bootstrap/index.md
+      - "state/ — 应用状态管理": state/index.md
+      - "context/ — React上下文层": context_module/index.md
+      - "types/ — 核心类型定义": types/index.md
+      - "constants/ — 常量配置中心": constants/index.md
+      - "entrypoints/ — 应用入口点": entrypoints/index.md
+    - "🖥️ 用户界面":
+      - "screens/ — 屏幕组件": screens/index.md
+      - "keybindings/ — 键绑定系统": keybindings/index.md
+      - "vim/ — Vim输入模式": vim/index.md
+      - "cli/ — CLI输出与通信": cli/index.md
+    - "🧠 智能系统":
+      - "coordinator/ — 多Agent协调器": coordinator/index.md
+      - "memdir/ — 持久化记忆": memdir/index.md
+      - "services/ — 核心服务层": services/index.md
+    - "🔌 扩展系统":
+      - "plugins/ — 内置插件": plugins/index.md
+      - "schemas/ — Zod校验Schema": schemas/index.md
+      - "outputStyles/ — 输出样式": outputStyles/index.md
+    - "🌐 远程与网络":
+      - "remote/ — 远程会话管理": remote/index.md
+      - "server/ — Direct Connect": server/index.md
+      - "upstreamproxy/ — CCR代理": upstreamproxy/index.md
+    - "🎨 特色功能":
+      - "buddy/ — 虚拟伙伴系统": buddy/index.md
+      - "voice/ — 语音模式": voice/index.md
+      - "moreright/ — 内部功能存根": moreright/index.md
+      - "assistant/ — 远程历史": assistant/index.md
+  - "📋 进度跟踪": TODO.md

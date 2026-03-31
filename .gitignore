@@ -1,0 +1,11 @@
+site/
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
+.workbuddy/
+src/
+*.ts
+*.tsx
+*.js
+*.map
