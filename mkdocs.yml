@@ -105,8 +105,15 @@ nav:
       - "types/ — 核心类型定义": types/index.md
       - "constants/ — 常量配置中心": constants/index.md
       - "entrypoints/ — 应用入口点": entrypoints/index.md
+    - "⚙️ 核心实现":
+      - "tools/ — AI工具大全(33+)": tools/index.md
+      - "commands/ — 斜杠命令(67+)": commands/index.md
+      - "components/ — UI组件库(439)": components/index.md
+      - "hooks/ — React Hooks(104)": hooks/index.md
+      - "utils/ — 工具函数(564)": utils/index.md
     - "🖥️ 用户界面":
       - "screens/ — 屏幕组件": screens/index.md
+      - "ink/ — 终端渲染引擎": ink/index.md
       - "keybindings/ — 键绑定系统": keybindings/index.md
       - "vim/ — Vim输入模式": vim/index.md
       - "cli/ — CLI输出与通信": cli/index.md
@@ -116,15 +123,18 @@ nav:
       - "services/ — 核心服务层": services/index.md
     - "🔌 扩展系统":
       - "plugins/ — 内置插件": plugins/index.md
+      - "skills/ — Skills系统": skills/index.md
       - "schemas/ — Zod校验Schema": schemas/index.md
       - "outputStyles/ — 输出样式": outputStyles/index.md
     - "🌐 远程与网络":
       - "remote/ — 远程会话管理": remote/index.md
       - "server/ — Direct Connect": server/index.md
+      - "bridge/ — Bridge远程控制": bridge/index.md
       - "upstreamproxy/ — CCR代理": upstreamproxy/index.md
     - "🎨 特色功能":
       - "buddy/ — 虚拟伙伴系统": buddy/index.md
       - "voice/ — 语音模式": voice/index.md
+      - "tasks/ — 后台任务实现": tasks/index.md
       - "moreright/ — 内部功能存根": moreright/index.md
       - "assistant/ — 远程历史": assistant/index.md
   - "📋 进度跟踪": TODO.md
