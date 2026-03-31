@@ -1,6 +1,8 @@
 site_name: "Claude Code 源码教程"
 site_description: "Claude Code 项目的逐文件深度代码教程"
-site_url: ""
+site_url: "https://9p6p.github.io/claude-code-tutorial/"
+repo_url: https://github.com/9p6p/claude-code-tutorial
+repo_name: 9p6p/claude-code-tutorial
 docs_dir: tutorial
 site_dir: site
 
@@ -63,6 +65,9 @@ markdown_extensions:
   - pymdownx.details
   - attr_list
   - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - tables
   - toc:
       permalink: true
@@ -71,7 +76,11 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
+      link: https://github.com/9p6p/claude-code-tutorial
+      name: 教程源码仓库
+    - icon: fontawesome/brands/github
       link: https://github.com/anthropics/claude-code
+      name: Claude Code 原始项目
 
 nav:
   - "🏠 首页": index.md

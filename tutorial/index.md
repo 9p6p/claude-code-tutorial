@@ -1,6 +1,13 @@
 # Claude Code 源码教程
 
+[![GitHub](https://img.shields.io/badge/GitHub-教程源码仓库-181717?logo=github&logoColor=white)](https://github.com/9p6p/claude-code-tutorial)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-原始项目-7C3AED?logo=anthropic&logoColor=white)](https://github.com/anthropics/claude-code)
+[![Pages](https://img.shields.io/badge/在线阅读-GitHub_Pages-2088FF?logo=github-pages&logoColor=white)](https://9p6p.github.io/claude-code-tutorial/)
+
 **Claude Code** 是 Anthropic 开发的终端 AI 编程助手，这是一份面向开发者的逐文件源码解读教程。
+
+[:fontawesome-brands-github: **本教程源码仓库**](https://github.com/9p6p/claude-code-tutorial){ .md-button .md-button--primary }
+[:material-book-open-variant: **Claude Code 原始项目**](https://github.com/anthropics/claude-code){ .md-button }
 
 ---
 
