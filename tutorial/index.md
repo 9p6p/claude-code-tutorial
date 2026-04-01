@@ -98,7 +98,7 @@ Step 6: 结果返回
 | 工具类型系统 | `src/Tool.ts` | [Tool.md](./Tool.md) |
 | 查询引擎 | `src/QueryEngine.ts` | [QueryEngine.md](./QueryEngine.md) |
 | 核心查询循环 | `src/query.ts` | [query.md](./query.md) |
-| API 交互层 | `src/services/api/claude.ts` | [services/api/claude.md](./services/api/claude.md) |
+| API 交互层 | `src/services/api/claude.ts` | [services/index.md](./services/index.md) |
 | 上下文收集 | `src/context.ts` | [context.md](./context.md) |
 | 初始化 | `src/setup.ts` | [setup.md](./setup.md) |
 | 费用追踪 | `src/cost-tracker.ts` | [cost-tracker.md](./cost-tracker.md) |
